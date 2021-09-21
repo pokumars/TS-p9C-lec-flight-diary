@@ -1,15 +1,14 @@
-import diaries from '../../data/diaries';
+export type Weather = 'sunny' | 'rainy' | 'cloudy' | 'windy' | 'stormy';
 
-import { DiaryEntry, NonSensitiveDiaryEntry } from '../types';
+export type Visibility = 'great' | 'good' | 'ok' | 'poor';
 
-
-const getEntries = (): Array<DiaryEntry> => {
-  return diaries;
-};
-
-const addEntry = () => {
-  return null;
-};
+export interface DiaryEntry {
+  id: number;
+  date: string;
+  weather: Weather;
+  visibility: Visibility;
+  comment: string;
+}
 
 /*Utility types are so useful in typescript
 
@@ -26,23 +25,4 @@ https://www.typescriptlang.org/docs/handbook/utility-types.html#omittype-keys
 we can also create a new type using the Pick or Omit utility types
 type NonSensitiveDiaryEntry  = Omit<DiaryEntry, 'comment'>;
 */
-
-const getNonSensitiveEntries = (): NonSensitiveDiaryEntry[] => {
-/*TypeScript only checks whether we have all of the required fields or not, but excess fields 
-are not prohibited so we may have to manually remove the excess fields so we dont expose
-sensitive data to the browser*/
-return diaries.map(({ id, date, weather, visibility }) => ({
-  id,
-  date,
-  weather,
-  visibility,
-}));
-
-
-};
-
-export default {
-  getEntries,
-  addEntry,
-  getNonSensitiveEntries
-};
+export type NonSensitiveDiaryEntry  = Omit<DiaryEntry, 'comment'>;
