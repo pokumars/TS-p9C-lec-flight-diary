@@ -1,14 +1,20 @@
 import diaries from '../../data/diaries';
 
-import { DiaryEntry, NonSensitiveDiaryEntry } from '../types';
+import { DiaryEntry, NewDiaryentry, NonSensitiveDiaryEntry } from '../types';
 
 
 const getEntries = (): Array<DiaryEntry> => {
   return diaries;
 };
 
-const addEntry = () => {
-  return null;
+const addDiary = (entry: NewDiaryentry): DiaryEntry =>  {
+  const newDiaryEntry = {
+    id: Math.max(...diaries.map(d => d.id)) + 1,
+   ...entry
+  };
+
+  diaries.push(newDiaryEntry);
+  return newDiaryEntry;
 };
 
 /*Utility types are so useful in typescript
@@ -18,7 +24,7 @@ So in order to return the DiaryEntry without the 'comment' field, we can do this
 const getNonSensitiveEntries = (): Pick<DiaryEntry,  'id' | 'date' | 'weather' | 'visibility'>[] => {}
 
 But since we are only trying to remove the 'comment' field, we can do so with the Omit utility type
-const getNonSensitiveEntries = ():  Omit<DiaryEntry, 'comment'>[] 
+const getNonSensitiveEntries = ():  Omit<DiaryEntry, 'comment'>[]
 
 https://www.typescriptlang.org/docs/handbook/utility-types.html#picktype-keys
 https://www.typescriptlang.org/docs/handbook/utility-types.html#omittype-keys
@@ -28,21 +34,26 @@ type NonSensitiveDiaryEntry  = Omit<DiaryEntry, 'comment'>;
 */
 
 const getNonSensitiveEntries = (): NonSensitiveDiaryEntry[] => {
-/*TypeScript only checks whether we have all of the required fields or not, but excess fields 
+/*TypeScript only checks whether we have all of the required fields or not, but excess fields
 are not prohibited so we may have to manually remove the excess fields so we dont expose
 sensitive data to the browser*/
-return diaries.map(({ id, date, weather, visibility }) => ({
-  id,
-  date,
-  weather,
-  visibility,
-}));
-
-
+  return diaries.map(({ id, date, weather, visibility }) => ({
+    id,
+    date,
+    weather,
+    visibility,
+  }));
 };
+
+const findById= (id: number): DiaryEntry | undefined => {
+  const entry = diaries.find(d => d.id === id);
+  return entry;
+};
+
 
 export default {
   getEntries,
-  addEntry,
-  getNonSensitiveEntries
+  addDiary,
+  getNonSensitiveEntries,
+  findById
 };

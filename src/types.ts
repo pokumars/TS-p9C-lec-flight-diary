@@ -26,3 +26,4 @@ we can also create a new type using the Pick or Omit utility types
 type NonSensitiveDiaryEntry  = Omit<DiaryEntry, 'comment'>;
 */
 export type NonSensitiveDiaryEntry  = Omit<DiaryEntry, 'comment'>;
+export type NewDiaryentry = Omit<DiaryEntry, 'id'>;
