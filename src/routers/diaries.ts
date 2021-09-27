@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import express from 'express';
 import diaryService from '../services/diaryService' ;
+import toNewDiaryEntry from '../utils';
 
 const router = express.Router();
 
@@ -19,16 +19,11 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const {date, weather, visibility, comment} = req.body;
 
-  const newDiaryEntry = diaryService.addDiary({
-    date,
-    weather,
-    visibility,
-    comment,
-  });
+  const newDiaryEntry =  toNewDiaryEntry(req.body);
+  const addedEntry = diaryService.addDiary(newDiaryEntry);
 
-  res.send(newDiaryEntry);
+  res.send(addedEntry);
 });
 
 export default router;
