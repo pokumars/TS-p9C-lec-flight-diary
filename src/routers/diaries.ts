@@ -19,11 +19,14 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+  try {
+    const newDiaryEntry = toNewDiaryEntry(req.body);
 
-  const newDiaryEntry =  toNewDiaryEntry(req.body);
-  const addedEntry = diaryService.addDiary(newDiaryEntry);
-
-  res.send(addedEntry);
+    const addedEntry = diaryService.addDiary(newDiaryEntry);
+    res.json(addedEntry);
+  } catch (e: any) {
+    res.status(400).send(e.message);
+  }
 });
 
 export default router;
